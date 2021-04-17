@@ -1,18 +1,10 @@
 #include "book.h"
+#include "chp3.h"
 
 /// Simple Cuda addition function
 __global__ void add(int num_one, int num_b, int *sum_result_ptr) {
     *sum_result_ptr = num_one + num_b;
 }
-
-
-
-/// Query the cuda device(s) for their info
-void get_device_info(int &count);
-
-
-/// Show the results of the cuda addition
-void display_add_result(int &host_value, int *&cuda_gpu_ptr);
 
 int main() {
     int host_value;  // "host" means the regular cpu/memory
@@ -20,7 +12,6 @@ int main() {
     int count;
     get_device_info(count);
     display_add_result(host_value, cuda_gpu_ptr);
-
 
     return 0;
 }
