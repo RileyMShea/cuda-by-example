@@ -5,7 +5,7 @@
 #ifndef UNTITLED2_CHP3_H
 #define UNTITLED2_CHP3_H
 /// Query the cuda device(s) for their info
-void get_device_info(int &count);
+void get_device_info(int &cuda_device_count, cudaDeviceProp &device_specs);
 
 
 /// Show the results of the cuda addition
