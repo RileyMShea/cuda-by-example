@@ -1,21 +1,29 @@
-#include <iostream>
 #include "book.h"
 
-__global__ void add(int a, int b, int *c){
-    *c = a + b;
+/// Simple Cuda addition function
+__global__ void add(int numberA, int numberB, int *sum_result_ptr){
+    *sum_result_ptr = numberA + numberB;
 }
 
 int main() {
-    int c;
-    int *dev_c;
+    int host_value;  // "host" means the regular cpu/memory
+    int *cuda_gpu_ptr; // "device" mean the CUDA code running on the GPU/MEM
 
-    HANDLE_ERROR(cudaMalloc((void**) &dev_c, sizeof(int)));
 
-    add<<<1,1>>>(2,7, dev_c);
 
-    HANDLE_ERROR(cudaMemcpy(&c,dev_c,sizeof(int),cudaMemcpyDeviceToHost));
-    printf("2+7 = %d\n",c);
-    cudaFree(dev_c);
+    // allocate memory on the cuda device
+    HANDLE_ERROR(cudaMalloc((void**) &cuda_gpu_ptr, sizeof(int)));
+
+    // perform calculation with CUDA on GPU
+    add<<<1,1>>>(2, 7, cuda_gpu_ptr);
+
+
+    // Copy result from CUDA memory back to host memory
+    HANDLE_ERROR(cudaMemcpy(&host_value, cuda_gpu_ptr, sizeof(int), cudaMemcpyDeviceToHost));
+    // end utility macro
+
+    printf("3+7 = %d\n", host_value);
+    cudaFree(cuda_gpu_ptr);
 
     return 0;
 }
